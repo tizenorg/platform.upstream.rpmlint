@@ -6,7 +6,7 @@ License:        GPL-2.0+
 Group:          System/Packages
 Version:        1.4
 Release:        0
-Source0:        http://rpmlint.zarb.org/download/rpmlint-%{version}.tar.xz
+Source0:        http://rpmlint.zarb.org/download/rpmlint-%{version}.tar.bz2
 Url:            http://rpmlint.zarb.org/
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       /usr/bin/readelf
