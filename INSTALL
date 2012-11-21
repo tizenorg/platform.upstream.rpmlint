@@ -1,0 +1,16 @@
+You need the following utilities to run rpmlint:
+
+	o python 2.x (x >= 4)
+	o rpm 4.4.2.2 or newer and its python bindings
+	o libmagic and its python bindings (optional)
+	o readelf
+	o cpio
+	o desktop-file-validate
+	o gzip, bzip2 and xz
+	o enchant and its python bindings (optional)
+
+and the following programs to install it:
+
+	o python 2.x (x >= 4)
+	o rpm python bindings 4.4 or newer
+	o sed
