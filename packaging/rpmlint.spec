@@ -27,7 +27,7 @@ Rpmlint is a tool to check common errors on rpm packages. Binary and
 source packages can be checked.
 
 %prep
-%setup -q -n rpmlint-%{version} -a1
+%setup -q -n rpmlint-%{version} 
 
 %build
 make %{?_smp_mflags}
