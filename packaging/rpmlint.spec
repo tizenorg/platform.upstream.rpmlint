@@ -1,5 +1,5 @@
 Name:           rpmlint
-BuildRequires:  rpm-python
+BuildRequires:  python-rpm
 BuildRequires:  xz
 Summary:        Rpm correctness checker
 License:        GPL-2.0+
