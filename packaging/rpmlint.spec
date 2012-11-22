@@ -18,7 +18,7 @@ Requires:       desktop-file-utils
 Requires:       file
 Requires:       findutils
 Requires:       python-magic
-Requires:       rpm-python
+Requires:       python-rpm
 BuildArch:      noarch
 %py_requires
 
