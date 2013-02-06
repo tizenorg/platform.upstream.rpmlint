@@ -646,7 +646,7 @@ points_regex = re.compile('^\.\./(.*)')
 doc_regex = re.compile('^/usr(/share|/X11R6)?/(doc|man|info)/|^/opt/kde3/share/doc|^/usr/share/gnome/help')
 bin_regex = re.compile('^/(?:usr/(?:s?bin|games)|s?bin)/(.*)')
 includefile_regex = re.compile('\.(c|h)(pp|xx)?$', re.IGNORECASE)
-develfile_regex = re.compile('\.(a|cmxa?|mli?)$')
+develfile_regex = re.compile('\.(a|cmxa?|mli?|gir)$')
 buildconfigfile_regex = re.compile('(\.pc|/bin/.+-config)$')
 docdir_examples_regex = re.compile('^/usr/(?:share/doc/packages|lib(?:64))/[^/]+/(?:example|demo|script|contrib)')
 # room for improvement with catching more -R, but also for false positives...
