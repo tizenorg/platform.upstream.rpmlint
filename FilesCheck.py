@@ -1272,7 +1272,8 @@ class FilesCheck(AbstractCheck.AbstractCheck):
                                  f.endswith('.la')):
                             printError(pkg, 'script-without-shebang', f)
 
-                        if mode & 0111 == 0 and not is_doc:
+                        if mode & 0111 == 0 and not is_doc and \
+                           interpreter and interpreter.startswith("/"):
                             printError(pkg, 'non-executable-script', f,
                                        oct(perm), interpreter)
                         if '\r' in chunk:
