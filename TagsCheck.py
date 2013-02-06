@@ -819,6 +819,7 @@ class TagsCheck(AbstractCheck.AbstractCheck):
 
         obs_names = [x[0] for x in pkg.obsoletes()]
         prov_names = [x[0].split(':/')[0] for x in pkg.provides()]
+        conf_names = map(lambda x: x[0].split(':/')[0], pkg.conflicts())
 
         for o in (x for x in obs_names if x not in prov_names):
             printWarning(pkg, 'obsolete-not-provided', o)
@@ -830,6 +831,8 @@ class TagsCheck(AbstractCheck.AbstractCheck):
         #       https://bugzilla.redhat.com/460872
         useless_provides = []
         for p in prov_names:
+            if p in conf_names:
+                printWarning(pkg, 'conflicts-with-provides', p)
             if prov_names.count(p) != 1 and p not in useless_provides:
                 useless_provides.append(p)
         for p in useless_provides:
@@ -969,6 +972,10 @@ the Release tag.''',
 'no-name-tag',
 '''There is no Name tag in your package. You have to specify a name using the
 Name tag.''',
+
+'conflicts-with-provides',
+'''The same symbolic name is provided and conflicted. This package might be
+uninstallable, if versioning matches''',
 
 'non-coherent-filename',
 '''The file which contains the package should be named
