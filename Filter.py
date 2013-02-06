@@ -24,12 +24,8 @@ _diagnostic = list()
 _badness_score = 0
 printed_messages = { "I": 0, "W": 0, "E": 0 }
 
-if sys.stdout.isatty():
-    def __print(s):
-        print(s)
-else:
-    def __print(s):
-        print(s.encode(locale.getpreferredencoding(), "replace"))
+def __print(s):
+    print(s)
 
 def printInfo(pkg, reason, *details):
     _print("I", pkg, reason, details)
