@@ -18,7 +18,7 @@ from Filter import addDetails, printError, printWarning
 import AbstractCheck
 import Config
 import Pkg
-
+import stat
 
 chkconfig_content_regex = re.compile('^\s*#\s*chkconfig:\s*([-0-9]+)\s+[-0-9]+\s+[-0-9]+')
 subsys_regex = re.compile('/var/lock/subsys/([^/"\'\n\s;&|]+)', re.MULTILINE)
@@ -62,6 +62,9 @@ class InitScriptCheck(AbstractCheck.AbstractCheck):
 
             if not fname.startswith('/etc/init.d/') and \
                     not fname.startswith('/etc/rc.d/init.d/'):
+                continue
+
+            if not stat.S_ISREG(pkgfile.mode):
                 continue
 
             basename = os.path.basename(fname)
