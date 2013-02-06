@@ -813,7 +813,7 @@ class TagsCheck(AbstractCheck.AbstractCheck):
                     printWarning(pkg, 'no-url-tag')
 
         obs_names = [x[0] for x in pkg.obsoletes()]
-        prov_names = [x[0] for x in pkg.provides()]
+        prov_names = [x[0].split(':/')[0] for x in pkg.provides()]
 
         for o in (x for x in obs_names if x not in prov_names):
             printWarning(pkg, 'obsolete-not-provided', o)
