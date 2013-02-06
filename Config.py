@@ -103,11 +103,23 @@ def getOption(name, default = ""):
 _filters = []
 _filters_re = None
 
+_filters_non_except = []
+_filters_non_except_re = None
+
+_filters_except = []
+_filters_except_re = None
+
 def addFilter(s):
     global _filters_re
+    global _filters_except
 
-    _filters.append(s)
-    _filters_re = None
+    if len(_filters_except):
+        _filters.append(s)
+        _filters_re = None
+    else:
+        _filters_non_except.append(s)
+        _filters_non_except_re = None
+
 
 def removeFilter(s):
     global _filters_re
@@ -122,7 +134,13 @@ def removeFilter(s):
 _scoring = {}
 
 def setBadness(s, score):
+    global _scoring
     _scoring[s] = score
+
+def setFilterException(s):
+    global _filters_except
+
+    _filters_except.append(s)
 
 def badness(s):
     return _scoring.get(s, 0)
@@ -130,11 +148,24 @@ def badness(s):
 _non_named_group_re = re.compile('[^\\](\()[^:]')
 def isFiltered(s):
     global _filters_re
+    global _filters_except
+    global _filters_except_re
+    global _filters_non_except
+    global _filters_non_except_re
 
-    if _filters_re == None:
-        # no filter
-        if len(_filters) == 0:
-            return False
+    if _filters_non_except_re == None and len(_filters_non_except):
+        _filters_non_except_re = '(?:' + _filters_non_except[0] + ')'
+
+        for idx in range(1, len(_filters_non_except)):
+            # to prevent named group overflow that happen when there is too
+            # many () in a single regexp: AssertionError: sorry, but this
+            # version only supports 100 named groups
+            if '(' in _filters_non_except[idx]:
+                _non_named_group_re.subn('(:?', _filters_non_except[idx])
+            _filters_non_except_re = _filters_non_except_re + '|(?:' + _filters_non_except[idx] +')'
+        _filters_non_except_re = re.compile(_filters_non_except_re)
+
+    if _filters_re == None and len(_filters):
         _filters_re = '(?:' + _filters[0] + ')'
 
         for idx in range(1, len(_filters)):
@@ -146,9 +177,27 @@ def isFiltered(s):
             _filters_re = _filters_re + '|(?:' + _filters[idx] +')'
         _filters_re = re.compile(_filters_re)
 
+    if _filters_except_re == None and len(_filters_except):
+        _filters_except_re = '(?:' + _filters_except[0] + ')'
+
+        for idx in range(1, len(_filters_except)):
+            # to prevent named group overflow that happen when there is too
+            # many () in a single regexp: AssertionError: sorry, but this
+            # version only supports 100 named groups
+            if '(' in _filters_except[idx]:
+                _non_named_group_re.subn('(:?', _filters_except[idx])
+            _filters_except_re = _filters_except_re + '|(?:' + _filters_except[idx] +')'
+        _filters_except_re = re.compile(_filters_except_re)
+
     if not no_exception:
-        if _filters_re.search(s):
+
+        if _filters_non_except_re and _filters_non_except_re.search(s):
             return True
+        if _filters_except_re and _filters_except_re.search(s):
+            return False
+        if _filters_re and _filters_re.search(s):
+            return True
+
     return False
 
 # Config.py ends here
