@@ -1148,8 +1148,11 @@ class FilesCheck(AbstractCheck.AbstractCheck):
                     if res and not (pkg.check_versioned_dep('python-base',
                                                             res.group(1)) or
                                     pkg.check_versioned_dep('python',
-                                                            res.group(1))):
-                        printError(pkg, 'no-dependency-on', 'python-base',
+                                                            res.group(1)) or
+                                    pkg.check_versioned_dep('python(abi)',
+                                                            res.group(1))
+                                    ):
+                        printError(pkg, 'no-dependency-on', 'python(abi)',
                                    res.group(1))
                         python_dep_error = True
 
