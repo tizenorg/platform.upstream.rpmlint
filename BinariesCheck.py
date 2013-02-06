@@ -208,6 +208,7 @@ usr_lib_exception_regex = re.compile(Config.getOption('UsrLibBinaryException', '
 srcname_regex = re.compile('(.*?)-[0-9]')
 invalid_dir_ref_regex = re.compile('/(home|tmp)(\W|$)')
 ocaml_mixed_regex = re.compile('^Caml1999X0\d\d$')
+usr_arch_share_regex = re.compile('/share/.*/(?:x86|i.86|x86_64|ppc|ppc64|s390|s390x|ia64)')
 
 def dir_base(path):
     res = path_regex.search(path)
@@ -280,7 +281,7 @@ class BinariesCheck(AbstractCheck.AbstractCheck):
             # arch dependent packages only from here on
 
             # in /usr/share ?
-            if fname.startswith('/usr/share/'):
+            if fname.startswith('/usr/share/') and not usr_arch_share_regex.search(fname):
                 printError(pkg, 'arch-dependent-file-in-usr-share', fname)
 
             # in /etc ?
