@@ -7,6 +7,8 @@ Group:          System/Packages
 Version:        1.4
 Release:        0
 Source0:        http://rpmlint.zarb.org/download/rpmlint-%{version}.tar.bz2
+Source1:        rpmlint-checks-master.tar.gz
+Source2:        config
 Source10:       rpmgroups.config
 Source11:       pie.config
 Source100:      syntax-validator.py
@@ -28,8 +30,8 @@ Rpmlint is a tool to check common errors on rpm packages. Binary and
 source packages can be checked.
 
 %prep
-%setup -q -n rpmlint-%{version} 
-
+%setup -q -n rpmlint-%{version}  -a1
+cp %{S:2} .
 %build
 make %{?_smp_mflags}
 
