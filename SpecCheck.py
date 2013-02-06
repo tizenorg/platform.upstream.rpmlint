@@ -605,8 +605,8 @@ SPEC file to build a valid RPM package.''',
 ("Name:" tag). Either rename your package or the specfile.''',
 
 'non-utf8-spec-file',
-'''The character encoding of the spec file is not UTF-8.  Convert it for
-example using iconv(1).''',
+'''The character encoding of the spec file (or the merged bits from the .changes file)
+is not UTF-8.  Convert it for example using iconv(1).''',
 
 'use-of-RPM_SOURCE_DIR',
 '''You use $RPM_SOURCE_DIR or %{_sourcedir} in your spec file. If you have to
