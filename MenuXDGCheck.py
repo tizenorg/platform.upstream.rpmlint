@@ -18,7 +18,7 @@ class MenuXDGCheck(AbstractCheck.AbstractFilesCheck):
         # $ echo $XDG_DATA_DIRS/applications
         # /var/lib/menu-xdg:/usr/share
         AbstractCheck.AbstractFilesCheck.__init__(
-            self, "MenuXDGCheck", "/usr/share/applications/.*\.desktop$")
+                self, "MenuXDGCheck", "(?:/usr/share|/etc/opt/.*/share|/opt/.*)/applications/.*\.desktop$")
 
     def check_file(self, pkg, filename):
         f = pkg.dirName() + filename
