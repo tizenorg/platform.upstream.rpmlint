@@ -1249,7 +1249,7 @@ class FilesCheck(AbstractCheck.AbstractCheck):
                     elif interpreter or mode & 0111 != 0 or \
                             script_regex.search(f):
                         if interpreter:
-                            if not interpreter_regex.search(interpreter):
+                            if mode & 0111 != 0 and not interpreter_regex.search(interpreter):
                                 printError(pkg, 'wrong-script-interpreter',
                                            f, interpreter)
                         elif not nonexec_file and not \
