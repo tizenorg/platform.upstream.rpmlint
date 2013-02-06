@@ -91,7 +91,7 @@ check = NamingPolicyCheck()
 
 
 check.add_check('xmms', '^xmms(-|$)', '^/usr/lib(64)?/xmms/')
-check.add_check('python', '^python(-|$)', '^/usr/lib(64)?/python[1-9](-[1-9])?')
+#check.add_check('python', '^python(2|3)?(-|$)', '^/usr/lib(64)?/python[1-9](-[1-9])?')
 check.add_check('perl5', '^perl(-|$)', '^/usr/lib(64)?/perl5/vendor_perl')
 check.add_check('apache2', '^apache2-mod_', '^/usr/lib(64)?/apache2-')
 check.add_check('fortune', '^fortune(-|$)', '^/usr/share/games/fortunes/')
