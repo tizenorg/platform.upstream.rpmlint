@@ -631,7 +631,7 @@ versions you can ignore this warning.''',
 
 'hardcoded-path-in-buildroot-tag',
 '''A path is hardcoded in your Buildroot tag. It should be replaced
-by something like %{_tmppath}/%name-root.''',
+by %{_tmppath}/%{name}-%{version}-build.''',
 
 'hardcoded-packager-tag',
 '''The Packager tag is hardcoded in your spec file. It should be removed, so
