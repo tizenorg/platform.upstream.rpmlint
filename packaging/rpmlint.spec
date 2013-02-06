@@ -32,6 +32,10 @@ source packages can be checked.
 %prep
 %setup -q -n rpmlint-%{version}  -a1
 cp %{S:2} .
+# Only move top-level python files 
+chmod 0755 rpmlint-checks-master/*.py
+mv rpmlint-checks-master/*.py .
+
 %build
 make %{?_smp_mflags}
 
