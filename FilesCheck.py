@@ -648,6 +648,7 @@ bin_regex = re.compile('^/(?:usr/(?:s?bin|games)|s?bin)/(.*)')
 includefile_regex = re.compile('\.(c|h)(pp|xx)?$', re.IGNORECASE)
 develfile_regex = re.compile('\.(a|cmxa?|mli?)$')
 buildconfigfile_regex = re.compile('(\.pc|/bin/.+-config)$')
+docdir_examples_regex = re.compile('^/usr/(?:share/doc/packages|lib(?:64))/[^/]+/(?:example|demo|script|contrib)')
 # room for improvement with catching more -R, but also for false positives...
 buildconfig_rpath_regex = re.compile('(?:-rpath|Wl,-R)\\b')
 sofile_regex = re.compile('/lib(64)?/(.+/)?lib[^/]+\.so$')
@@ -1199,7 +1200,7 @@ class FilesCheck(AbstractCheck.AbstractCheck):
                                        includefile_regex.search(f) or \
                                        develfile_regex.search(f) or \
                                        logrotate_regex.search(f)
-                    if nonexec_file:
+                    if nonexec_file and not docdir_examples_regex.search(f):
                         printWarning(pkg, 'spurious-executable-perm', f)
                 elif f.startswith('/etc/') and f not in config_files and \
                         f not in ghost_files:
@@ -1571,7 +1572,10 @@ included in your package.''',
 'spurious-executable-perm',
 '''The file is installed with executable permissions, but was identified as one
 that probably should not be executable.  Verify if the executable bits are
-desired, and remove if not.''',
+desired, and remove if not.
+NOTE: example scripts should be packaged under %docdir/examples, which will avoid
+this warning.
+''',
 
 'world-writable',
 '''A file or directory in the package is installed with world writable
