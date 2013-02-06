@@ -433,15 +433,6 @@ so_dep_regex = re.compile(r'\.so(\.[0-9a-zA-z]+)*(\([^)]*\))*$')
 # we assume that no rpm packages existed before rpm itself existed...
 oldest_changelog_timestamp = calendar.timegm(time.strptime("1995-01-01", "%Y-%m-%d"))
 
-private_so_paths = set()
-for path in ('%perl_archlib', '%perl_vendorarch', '%perl_sitearch',
-             '%python_sitearch', '%ruby_sitearch', '%php_extdir'):
-    epath = rpm.expandMacro(path)
-    if epath != path:
-        private_so_paths.add(epath)
-        private_so_paths.add(re.sub(r'/lib64(?=/|$)', '/lib', epath))
-        private_so_paths.add(re.sub(r'/lib(?=/|$)', '/lib64', epath))
-
 _enchant_checkers = {}
 def spell_check(pkg, str, fmt, lang, ignored):
 
@@ -856,29 +847,11 @@ class TagsCheck(AbstractCheck.AbstractCheck):
                                      (apply(Pkg.formatRequire, obs),
                                       apply(Pkg.formatRequire, prov)))
 
-        expfmt = rpm.expandMacro("%{_build_name_fmt}")
-        if pkg.isSource():
-            # _build_name_fmt often (always?) ends up not outputting src/nosrc
-            # as arch for source packages, do it ourselves
-            expfmt = re.sub(r'(?i)%\{?ARCH\b\}?', pkg.arch, expfmt)
-        expected = pkg.header.sprintf(expfmt).split("/")[-1]
-        basename = os.path.basename(pkg.filename)
-        if basename != expected:
-            printWarning(pkg, 'non-coherent-filename', basename, expected)
-
         for tag in ('Distribution', 'DistTag', 'ExcludeArch', 'ExcludeOS',
                     'Vendor'):
             if hasattr(rpm, 'RPMTAG_%s' % tag.upper()):
                 self._unexpanded_macros(
                     pkg, tag, pkg[getattr(rpm, 'RPMTAG_%s' % tag.upper())])
-
-        for path in private_so_paths:
-            for fname, pkgfile in pkg.files().items():
-                if fname.startswith(path):
-                    for prov in pkgfile.provides:
-                        if so_dep_regex.search(prov[0]):
-                            printWarning(pkg, "private-shared-object-provides",
-                                         fname, apply(Pkg.formatRequire, prov))
 
 
     def check_description(self, pkg, lang, ignored_words):
