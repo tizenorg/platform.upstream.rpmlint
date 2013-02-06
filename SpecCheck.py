@@ -57,6 +57,7 @@ libdir_regex = re.compile('%{?_lib(?:dir)?\}?\\b')
 comment_or_empty_regex = re.compile('^\s*(#|$)')
 defattr_regex = re.compile('^\s*%defattr\\b')
 attr_regex = re.compile('^\s*%attr\\b')
+suse_version_regex = re.compile('%suse_version\s*[<>=]+\s*(\d+)')
 section_regexs = dict(
     ([x, re.compile('^%' + x + '(?:\s|$)')]
      for x in ('build', 'changelog', 'check', 'clean', 'description', 'files',
@@ -358,6 +359,12 @@ class SpecCheck(AbstractCheck.AbstractCheck):
                 if res:
                     if not res.group(1).startswith('%'):
                         printWarning(pkg, 'hardcoded-prefix-tag', res.group(1))
+
+                res = suse_version_regex.search(line)
+                if res and int(res.group(1)) > 0 and int(res.group(1)) < 1130:
+                    printWarning(pkg, "obsolete-suse-version-check", res.group(1))
+                elif res and int(res.group(1)) > 1230:
+                    printError(pkg, "invalid-suse-version-check", res.group(1))
 
                 res = prereq_regex.search(line)
                 if res:
@@ -773,6 +780,15 @@ set which may result in unexpected file permissions and thus security issues
 in the resulting binary package depending on the build environment and rpmbuild
 version (typically < 4.4).  Add default attributes using %defattr before it in
 the %files section, or use per entry %attr's.''',
+
+'obsolete-suse-version-check',
+'''The specfile contains a comparison of %suse_version against a suse release
+that is no longer in maintenance. Consider removing obsolete parts of your
+spec file to make it more readable.''',
+
+'invalid-suse-version-check',
+'''The specfile contains a comparison of %suse_version against a suse release
+that does not exist. Please double check.''',
 
 'non-standard-group',
 '''The value of the Group tag in the package is not valid.  Valid groups are:
