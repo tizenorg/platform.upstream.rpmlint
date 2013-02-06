@@ -1024,8 +1024,8 @@ Development/''',
 "%s".''' % '", "'.join(VALID_GROUPS),
 
 'no-changelogname-tag',
-'''There is no %changelog tag in your spec file. To insert it, just insert a
-'%changelog' in your spec file and rebuild it.''',
+'''There is no changelog. Please insert a '%changelog' section heading in your
+spec file and prepare your changes file using e.g. the 'osc vc' command.''',
 
 'no-version-in-last-changelog',
 '''The latest changelog entry doesn't contain a version. Please insert the
