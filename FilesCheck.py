@@ -859,7 +859,7 @@ class FilesCheck(AbstractCheck.AbstractCheck):
         debuginfo_srcs = False
         debuginfo_debugs = False
 
-        if not doc_files:
+        if not lib_package and not doc_files:
             printWarning(pkg, 'no-documentation')
 
         if files:
