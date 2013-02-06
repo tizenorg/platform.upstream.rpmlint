@@ -1217,7 +1217,7 @@ class FilesCheck(AbstractCheck.AbstractCheck):
                     if nonexec_file and not docdir_examples_regex.search(f):
                         printWarning(pkg, 'spurious-executable-perm', f)
                 elif f.startswith('/etc/') and f not in config_files and \
-                        f not in ghost_files:
+                        f not in ghost_files and not f.endswith(".desktop"):
                     printWarning(pkg, 'non-conffile-in-etc', f)
 
                 if pkg.arch == 'noarch' and f.startswith('/usr/lib64/python'):
