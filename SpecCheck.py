@@ -224,7 +224,9 @@ class SpecCheck(AbstractCheck.AbstractCheck):
 
                 continue
 
-            if current_section in ('prep', 'build') and \
+            if current_section in ('prep', 'build','pre', 'post', 'postun',
+                    'trigger', 'triggerin', 'triggerprein', 'triggerun', 'triggerpostun',
+                    'pretrans', 'posttrans') and \
                     contains_buildroot(line):
                 printWarning(pkg, 'rpm-buildroot-usage', '%' + current_section,
                              line[:-1].strip())
