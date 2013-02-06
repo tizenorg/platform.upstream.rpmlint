@@ -883,7 +883,7 @@ class TagsCheck(AbstractCheck.AbstractCheck):
         spell_check(pkg, utf8summary, 'Summary(%s)', lang, ignored_words)
         if '\n' in summary:
             printError(pkg, 'summary-on-multiple-lines', lang)
-        if summary[0] != summary[0].upper():
+        if summary[0] != summary[0].upper() and not summary.startswith("openSUSE"):
             printWarning(pkg, 'summary-not-capitalized', lang, summary)
         if summary[-1] == '.':
             printWarning(pkg, 'summary-ended-with-dot', lang, summary)
