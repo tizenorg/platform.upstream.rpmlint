@@ -493,7 +493,7 @@ class Pkg:
                 dir = self.dirname)
             # TODO: better shell escaping or sequence based command invocation
             command_str = \
-                'rpm2cpio "%s" | (cd "%s"; cpio -id); chmod -R +rX "%s"' % \
+                "rpm2cpio '%s' | (cd '%s'; cpio -id); chmod -R +rX '%s'" % \
                 (self.filename, self.dirname, self.dirname)
             cmd = commands.getstatusoutput(command_str)
             self.extracted = True
