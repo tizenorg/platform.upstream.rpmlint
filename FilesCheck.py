@@ -1697,7 +1697,10 @@ executed.''',
 executed.''',
 
 'wrong-script-interpreter',
-'''This script uses an incorrect interpreter.''',
+'''This script uses an incorrect interpreter. Correct interpreters should
+be an absolute path to a file in in /(s)bin or /usr/(s)bin.
+Alternatively, if the file isn't supposed to be executed, then don't
+mark it as executable.  ''',
 
 'non-executable-script',
 '''This text file contains a shebang or is located in a path dedicated for
