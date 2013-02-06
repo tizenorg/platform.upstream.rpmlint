@@ -212,7 +212,7 @@ def main():
               % (packages_checked, specfiles_checked,
                  printed_messages["E"], printed_messages["W"])
 
-    if printed_messages["E"] > 0:
+    if badnessThreshold() < 0 and printed_messages["E"] > 0:
         sys.exit(64)
     sys.exit(0)
 

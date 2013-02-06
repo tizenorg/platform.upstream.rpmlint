@@ -112,7 +112,7 @@ def printAllReasons():
                 if len(last_reason):
                     printDescriptions(last_reason)
                 last_reason = reason
-        __print(diag)
+        __print(diag[:-1])
     if Config.info and len(last_reason):
         printDescriptions(last_reason)
     _diagnostic = list()
