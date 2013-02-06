@@ -31,7 +31,7 @@ INCORRECT_LOCALES = {
     'en_UK': 'en_GB'}
 
 package_regex = re.compile('-(' + '|'.join(LANGUAGES) + ')$')
-locale_regex = re.compile('^(/usr/share/locale/([^/]+))/')
+locale_regex = re.compile('^(/(usr|opt/kde3|opt/gnome)/share/locale/([^/]+))/')
 correct_subdir_regex = re.compile('^(([a-z][a-z]([a-z])?(_[A-Z][A-Z])?)([.@].*$)?)$')
 lc_messages_regex = re.compile('/usr/share/locale/([^/]+)/LC_MESSAGES/.*(mo|po)$')
 man_regex = re.compile('/usr(?:/share)?/man/([^/]+)/man[0-9n][^/]*/[^/]+$')
