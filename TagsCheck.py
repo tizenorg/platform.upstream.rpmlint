@@ -714,6 +714,8 @@ class TagsCheck(AbstractCheck.AbstractCheck):
         self._unexpanded_macros(pkg, 'Group', group)
         if not group:
             printError(pkg, 'no-group-tag')
+        elif pkg.name.endswith('-devel') and not group.startswith('Development/'):
+            printWarning(pkg, 'devel-package-with-non-devel-group', group)
         elif VALID_GROUPS and group not in VALID_GROUPS:
             printWarning(pkg, 'non-standard-group', group)
 
@@ -1025,6 +1027,10 @@ won't fool the specfile parser, and rebuild the package.''',
 'no-group-tag',
 '''There is no Group tag in your package. You have to specify a valid group
 in your spec file using the Group tag.''',
+
+'devel-package-with-non-devel-group',
+'''The package ends with -devel but does not have a RPM group starting with
+Development/''',
 
 'non-standard-group',
 '''The value of the Group tag in the package is not valid.  Valid groups are:
