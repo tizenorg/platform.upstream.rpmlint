@@ -253,7 +253,18 @@ class BinariesCheck(AbstractCheck.AbstractCheck):
             is_elf = 'ELF' in pkgfile.magic
             is_ar = 'current ar archive' in pkgfile.magic
             is_ocaml_native = 'Objective caml native' in pkgfile.magic
+            is_shell = "shell script" in pkgfile.magic
             is_binary = is_elf or is_ar or is_ocaml_native
+
+            if is_shell:
+                count= 0
+                for l in file(pkgfile.path, "r"):
+                    count = count + 1
+                    if (l.find("This wrapper script should never be moved out of the build directory") != -1):
+                        printError(pkg, 'libtool-wrapper-in-package', fname)
+                        break
+                    if (count > 20):
+                        break;
 
             if not is_binary:
                 if reference_regex.search(fname):
@@ -501,6 +512,15 @@ recompiled separately from the static libraries with the -fPIC option.
 
 Another common mistake that causes this problem is linking with
 ``gcc -Wl,-shared'' instead of ``gcc -shared''.''',
+
+'libtool-wrapper-in-package',
+'''Your package contains a libtool wrapper shell script. This
+will not work. Instead of install'ing the libtool wrapper file,
+run·
+
+libtool --mode=install install -m perm <file> <dest>
+
+to install the relinked file.''',
 
 'binary-or-shlib-defines-rpath',
 '''The binary or shared library defines `RPATH'. Usually this is a
