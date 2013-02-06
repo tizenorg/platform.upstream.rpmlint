@@ -17,14 +17,13 @@ try:
 except ImportError:
     __version__ = 'devel'
 
-DEFAULT_CHECKS = ("DistributionCheck",
+DEFAULT_CHECKS = (
                   "TagsCheck",
                   "BinariesCheck",
                   "ConfigCheck",
                   "FilesCheck",
                   "DocFilesCheck",
                   "FHSCheck",
-                  "SignatureCheck",
                   "I18NCheck",
                   "MenuCheck",
                   "PostCheck",
