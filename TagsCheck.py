@@ -416,6 +416,7 @@ lib_devel_number_regex = re.compile('^lib(.*?)([0-9.]+)(_[0-9.]+)?-devel')
 invalid_url_regex = re.compile(Config.getOption('InvalidURL'), re.IGNORECASE)
 lib_package_regex = re.compile('(?:^(?:compat-)?lib.*?(\.so.*)?|libs?[\d-]*)$', re.IGNORECASE)
 leading_space_regex = re.compile('^\s+')
+pkg_config_regex = re.compile('^/usr/(?:lib\d*|share)/pkgconfig/')
 license_regex = re.compile('\(([^)]+)\)|\s(?:and|or)\s')
 invalid_version_regex = re.compile('([0-9](?:rc|alpha|beta|pre).*)', re.IGNORECASE)
 # () are here for grouping purpose in the regexp
@@ -629,10 +630,12 @@ class TagsCheck(AbstractCheck.AbstractCheck):
                 base = is_devel.group(1)
                 dep = None
                 has_so = False
+                has_pc = False
                 for fname in pkg.files():
                     if fname.endswith('.so'):
                         has_so = True
-                        break
+                    if pkg_config_regex.match(fname) and fname.endswith('.pc'):
+                        has_pc = True
                 if has_so:
                     base_or_libs = base + '/' + base + '-libs/lib' + base
                     # try to match *%_isa as well (e.g. "(x86-64)", "(x86-32)")
@@ -668,6 +671,15 @@ class TagsCheck(AbstractCheck.AbstractCheck):
 
                         if prov not in (x[0] for x in pkg.provides()):
                             printWarning(pkg, 'no-provides', prov)
+
+                if has_pc:
+                    found_pkg_config_dep = False
+                    for p in (x[0] for x in pkg.provides()):
+                        if (p.startswith("pkgconfig(")):
+                            found_pkg_config_dep = True
+                            break
+                    if not found_pkg_config_dep:
+                        printWarning(pkg, 'no-pkg-config-provides')
 
         # List of words to ignore in spell check
         ignored_words = set()
@@ -1107,6 +1119,11 @@ instead or require a file in bin or /etc.''',
 
 'no-url-tag',
 '''The URL tag is missing. Please add a http or ftp link to the project location.''',
+
+'no-pkg-config-provides',
+'''The package installs a .pc file but does not provide pkgconfig(..) provides.
+The most likely reason for that is that it was built without BuildRequires: pkg-config.
+Please double check your build dependencies.''',
 
 'name-repeated-in-summary',
 '''The name of the package is repeated in its summary.  This is often redundant
