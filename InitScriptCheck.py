@@ -30,6 +30,10 @@ lsb_tags_regex = re.compile('^# ([\w-]+):\s*(.*?)\s*$')
 lsb_cont_regex = re.compile('^#(?:\t|  )(.*?)\s*$')
 use_subsys = Config.getOption('UseVarLockSubsys', True)
 
+stop_on_removal_regex=re.compile('/etc/init.d/\$service stop > /dev/null')
+restart_on_update_regex=re.compile('/etc/init.d/\$service try-restart > /dev/null')
+insserv_cleanup_regex=re.compile('^\s*/sbin/insserv /etc/init.d$', re.MULTILINE)
+
 LSB_KEYWORDS = ('Provides', 'Required-Start', 'Required-Stop', 'Should-Start',
                 'Should-Stop', 'Default-Start', 'Default-Stop',
                 'Short-Description', 'Description')
@@ -47,6 +51,13 @@ class InitScriptCheck(AbstractCheck.AbstractCheck):
             return
 
         initscript_list = []
+
+
+        # check chkconfig call in %post and %preun
+        postin = pkg[rpm.RPMTAG_POSTIN] or pkg.scriptprog(pkg[rpm.RPMTAG_POSTINPROG])
+        preun = pkg[rpm.RPMTAG_PREUN] or pkg.scriptprog(pkg[rpm.RPMTAG_PREUNPROG])
+        postun = pkg[rpm.RPMTAG_POSTUN] or pkg.scriptprog(pkg[rpm.RPMTAG_POSTUNPROG])
+
         for fname, pkgfile in pkg.files().items():
 
             if not fname.startswith('/etc/init.d/') and \
@@ -61,20 +72,16 @@ class InitScriptCheck(AbstractCheck.AbstractCheck):
             if "." in basename:
                 printError(pkg, 'init-script-name-with-dot', fname)
 
-            # check chkconfig call in %post and %preun
-            postin = pkg[rpm.RPMTAG_POSTIN] or \
-                pkg.scriptprog(rpm.RPMTAG_POSTINPROG)
-            if not postin:
-                printError(pkg, 'init-script-without-chkconfig-postin', fname)
-            elif not chkconfig_regex.search(postin):
-                printError(pkg, 'postin-without-chkconfig', fname)
-
             preun = pkg[rpm.RPMTAG_PREUN] or \
                 pkg.scriptprog(rpm.RPMTAG_PREUNPROG)
-            if not preun:
-                printError(pkg, 'init-script-without-chkconfig-preun', fname)
-            elif not chkconfig_regex.search(preun):
-                printError(pkg, 'preun-without-chkconfig', fname)
+            if not preun or not stop_on_removal_regex.search(preun):
+                printError(pkg, 'init-script-without-%stop_on_removal-preun', fname)
+
+            if not postun or not restart_on_update_regex.search(postun):
+                printError(pkg, 'init-script-without-%restart_on_update-postun', fname)
+
+            if not postun or not insserv_cleanup_regex.search(postun):
+                printError(pkg, 'init-script-without-%insserv_cleanup-postun', fname)
 
             status_found = False
             reload_found = False
@@ -275,6 +282,17 @@ of chkconfig don't work as expected with init script names like that.''',
 'init-script-non-executable',
 '''The init script should have at least the execution bit set for root
 in order for it to run at boot time.''',
+
+'init-script-without-%stop_on_removal-preun',
+'''The init script should have a %preun script that calls %stop_on_removal.''',
+
+'init-script-without-%insserv_cleanup-postun',
+'''The package doesn't have a %insserv_cleanup call in %postun''',
+
+'init-script-without-%restart_on_update-postun',
+''' The package has an init script but is missing the %restart_on_update
+call in %postun to automatically restart the daemon. This is optional,
+but in most cases it is wanted. Please check.'''
 )
 
 # InitScriptCheck.py ends here
