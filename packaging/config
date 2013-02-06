@@ -43,6 +43,7 @@ addCheck("CheckPAMModules")
 # stuff autobuild takes care about
 addFilter(".*no-%clean-section.*")
 addFilter(".*shlib-legacy-policy-name-error.*")
+addFilter(".*shlib-policy-name-error.*")
 addFilter(".*no-manual-page-for-binary.*")
 addFilter(".*invalid-version.*")
 addFilter(".*invalid-packager.*")
