@@ -42,11 +42,11 @@ addCheck("CheckPAMModules")
 
 # stuff autobuild takes care about
 addFilter(".*no-%clean-section.*")
+addFilter(".*non-position-independent-executable.*")
 addFilter(".*devel-file-in-non-devel-package.*")
 addFilter(".*no-changelogname-tag.*")
 addFilter(".*binary-or-shlib-calls-gethostbyname.*")
 addFilter(".*shared-lib-calls-exit.*")
-addFilter(".*info-files-without-install-info-postin.*")
 addFilter(".*shlib-legacy-policy-name-error.*")
 addFilter(".*shlib-policy-name-error.*")
 addFilter(".*incorrect-fsf-address.*")
@@ -66,6 +66,11 @@ addFilter(".*invalid-distribution.*")
 addFilter(".*hardcoded-path-in-buildroot-tag.*")
 addFilter(".*no-buildroot-tag.*")
 addFilter(".*cross-directory-hard-link.*")
+
+
+# tizen
+addFilter(".*info-files-without-install-info-postun.*")
+addFilter(".*info-files-without-install-info-postin.*")
 
 # Configuration options used by the checks
 
