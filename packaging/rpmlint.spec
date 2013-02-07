@@ -11,6 +11,7 @@ Source1:        rpmlint-checks-master.tar.gz
 Source2:        config
 Source10:       rpmgroups.config
 Source11:       pie.config
+Source12:       licenses.config
 Source100:      syntax-validator.py
 Url:            http://rpmlint.zarb.org/
 Requires:       /usr/bin/readelf
@@ -49,7 +50,7 @@ head -n 8 $RPM_BUILD_ROOT/usr/share/rpmlint/config > $RPM_BUILD_ROOT/etc/rpmlint
 python -tt %{SOURCE100} $RPM_BUILD_ROOT/usr/share/rpmlint/*.py $RPM_BUILD_ROOT/usr/share/rpmlint/config
 %__install -m 644 %{SOURCE10} %{buildroot}/%{_sysconfdir}/rpmlint/
 %__install -m 644 %{SOURCE11} %{buildroot}/%{_sysconfdir}/rpmlint/
-
+%__install -m 644 %{SOURCE12} %{buildroot}/%{_sysconfdir}/rpmlint/
 
 %clean
 rm -rf $RPM_BUILD_ROOT
