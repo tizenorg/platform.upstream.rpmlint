@@ -61,6 +61,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/bin/*
 %{_prefix}/share/rpmlint
 %config(noreplace) /etc/rpmlint/config
+%config(noreplace) /etc/rpmlint/licenses.config
 %config %{_sysconfdir}/rpmlint/rpmgroups.config
 %config %{_sysconfdir}/rpmlint/pie.config
 %dir /etc/rpmlint
