@@ -42,6 +42,7 @@ addCheck("CheckPAMModules")
 
 # stuff autobuild takes care about
 addFilter(".*no-%clean-section.*")
+addFilter(".*devel-file-in-non-devel-package.*")
 addFilter(".*no-changelogname-tag.*")
 addFilter(".*binary-or-shlib-calls-gethostbyname.*")
 addFilter(".*shared-lib-calls-exit.*")
@@ -734,13 +735,11 @@ addFilter("libzypp.*shlib-policy-name-error.*libzypp")
 addFilter("libtool.*shlib-policy.*")
 
 # stuff that is currently too noisy, but might become relevant in the future
-addFilter(" prereq-use")
 addFilter(" file-not-utf8")
 addFilter(" tag-not-utf8")
 addFilter(" setup-not-quiet")
 addFilter(" no-cleaning-of-buildroot ")
 addFilter(" mixed-use-of-spaces-and-tabs ")
-addFilter(" prereq-use ")
 # an issue with OBS, works with autobuild
 addFilter(" no-packager-tag")
 addFilter(" unversioned-explicit-provides ")
@@ -778,10 +777,7 @@ addFilter(" non-remote_fs-dependency.*/boot")
 
 # exceptions for non-devel-buildrequires
 addFilter(" non-devel-buildrequires apache2-mod_perl")
-addFilter(" non-devel-buildrequires ksh")
 addFilter(" non-devel-buildrequires perl")
-addFilter(" non-devel-buildrequires php5")
-addFilter(" non-devel-buildrequires postfix")
 addFilter(" non-devel-buildrequires python")
 addFilter(" non-devel-buildrequires ruby")
 addFilter(" non-devel-buildrequires valgrind")
