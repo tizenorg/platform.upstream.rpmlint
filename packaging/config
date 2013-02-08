@@ -42,6 +42,8 @@ addCheck("CheckPAMModules")
 
 # stuff autobuild takes care about
 addFilter(".*no-%clean-section.*")
+addFilter(".*shlib-policy-missing-lib.*")
+addFilter(".*shlib-policy-missing-suffix.*")
 addFilter(".*non-position-independent-executable.*")
 addFilter(".*devel-file-in-non-devel-package.*")
 addFilter(".*no-changelogname-tag.*")
@@ -657,17 +659,9 @@ addFilter(" setuid-binary.*")
 addFilter(".*FSSTND-dir-in-var /var/adm/.*")
 addFilter("subdir-in-bin /sbin/conf.d/")
 addFilter(".* nss_db non-standard-dir-in-var db")
-addFilter("non-standard-dir-in-usr openwin")
-addFilter("ibcs2 non-standard-dir-in-usr i486-sysv4")
-addFilter("shlibs5 non-standard-dir-in-usr i486-linux-libc5")
 addFilter("filesystem dir-or-file")
 addFilter("filesystem hidden-")
 addFilter("explicit-lib-dependency libtool")
-
-
-# suppress any errors about internal packages
-addFilter("^qa\S+: [EWI]:")
-addFilter("^\S*(?:INTERNAL|internal)\.\S+: [EWI]:")
 
 
 # exceptions for devel-files
@@ -704,7 +698,6 @@ addFilter("configure-without-libdir-spec")
 addFilter("conffile-without-noreplace-flag /etc/init.d")
 addFilter("use-of-RPM_SOURCE_DIR")
 addFilter("use-tmp-in-")
-addFilter("symlink-contains-up-and-down-segments /var/lib/named")
 addFilter("no-ldconfig-symlink")
 addFilter("aaa_base\.\S+: \w: use-of-home-in-%post")
 addFilter("description-line-too-long")
@@ -727,7 +720,6 @@ addFilter("dangling-relative-symlink")
 addFilter(" lib-package-without-%mklibname")
 addFilter(" requires-on-release")
 addFilter(" non-executable-script /etc/profile.d/")
-addFilter(" non-executable-script /var/adm/fillup-templates/")
 addFilter(" init-script-name-with-dot ")
 addFilter('.* statically-linked-binary /sbin/ldconfig')
 addFilter('.* statically-linked-binary /sbin/init')
