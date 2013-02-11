@@ -73,6 +73,7 @@ addFilter(".*cross-directory-hard-link.*")
 # tizen
 addFilter(".*info-files-without-install-info-postun.*")
 addFilter(".*info-files-without-install-info-postin.*")
+addFilter(".*shlib-policy-nonversioned-dir.*")
 
 # Configuration options used by the checks
 
