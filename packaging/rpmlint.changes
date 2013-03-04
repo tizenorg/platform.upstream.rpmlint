@@ -1,3 +1,6 @@
+* Mon Mar 04 2013 Anas Nashif <anas.nashif@intel.com> submit/trunk/20130219.152228@c5183cc
+- We package locale package as -locale
+
 * Tue Feb 19 2013 Anas Nashif <anas.nashif@intel.com> accepted/trunk/20130214.143307@d3e4872
 - Fixed typo: Platfrom->Platform
 
