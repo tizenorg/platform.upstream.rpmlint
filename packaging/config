@@ -42,6 +42,7 @@ addCheck("CheckPAMModules")
 
 # stuff autobuild takes care about
 addFilter(".*no-%clean-section.*")
+addFilter(".*tizen-filelist-forbidden-opt.*")
 addFilter(".*shlib-policy-missing-lib.*")
 addFilter(".*shlib-policy-missing-suffix.*")
 addFilter(".*non-position-independent-executable.*")
@@ -71,6 +72,7 @@ addFilter(".*cross-directory-hard-link.*")
 
 
 # tizen
+addFilter(".*non-position-independent-executable.*")
 addFilter(".*info-files-without-install-info-postun.*")
 addFilter(".*info-files-without-install-info-postin.*")
 addFilter(".*shlib-policy-nonversioned-dir.*")
