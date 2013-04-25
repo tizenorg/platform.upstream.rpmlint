@@ -76,6 +76,8 @@ addFilter(".*non-position-independent-executable.*")
 addFilter(".*info-files-without-install-info-postun.*")
 addFilter(".*info-files-without-install-info-postin.*")
 addFilter(".*shlib-policy-nonversioned-dir.*")
+addFilter(".*init-script-without-%insserv_cleanup-postun.*")
+addFilter(".*init-script-without-%insserv_cleanup-preun.*")
 
 # Configuration options used by the checks
 
@@ -342,13 +344,13 @@ setOption('StandardUsers', (
 
 addDetails('non-standard-uid',
 '''A file in this package is owned by an unregistered user id.
-To register the user, please branch the devel:openSUSE:Factory:rpmlint rpmlint package, 
-add the user to the "config" file and send a submitrequest.
+To register the user, please branch the rpmlint package, 
+add the user to the "config" file and send a change request.
 ''',
 'non-standard-gid',
 '''A file in this package is owned by an unregistered group id.
-To register the group, please branch the devel:openSUSE:Factory:rpmlint rpmlint package, 
-add the group to the "config" file and send a submitrequest.
+To register the group, please branch the rpmlint package, 
+add the group to the "config" file and send a change request.
 '''
 )
 
