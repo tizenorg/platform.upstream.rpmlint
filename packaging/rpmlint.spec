@@ -24,7 +24,6 @@ Requires:       findutils
 Requires:       python-magic
 Requires:       python-rpm
 BuildArch:      noarch
-%py_requires
 
 %description
 Rpmlint is a tool to check common errors on rpm packages. Binary and
