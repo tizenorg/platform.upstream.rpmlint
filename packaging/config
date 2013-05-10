@@ -18,6 +18,8 @@ allChecks()
 
 addCheck("CheckBuildRoot")
 addCheck("CheckExecDocs")
+addCheck("LicenseCheck")
+addCheck("DocFilesCheck")
 addCheck("CheckPkgConfig")
 addCheck("CheckCommonFiles")
 #addCheck("CheckInitScripts")

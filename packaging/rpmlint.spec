@@ -5,7 +5,7 @@ Summary:        Rpm correctness checker
 License:        GPL-2.0+
 Group:          System/Packages
 Version:        1.4
-Release:        0
+Release:        100
 Source0:        http://rpmlint.zarb.org/download/rpmlint-%{version}.tar.bz2
 Source1:        rpmlint-checks-master.tar.gz
 Source2:        config
@@ -51,8 +51,6 @@ python -tt %{SOURCE100} $RPM_BUILD_ROOT/usr/share/rpmlint/*.py $RPM_BUILD_ROOT/u
 %__install -m 644 %{SOURCE11} %{buildroot}/%{_sysconfdir}/rpmlint/
 %__install -m 644 %{SOURCE12} %{buildroot}/%{_sysconfdir}/rpmlint/
 
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,0755)
