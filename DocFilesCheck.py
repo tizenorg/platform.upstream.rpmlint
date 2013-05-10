@@ -71,6 +71,12 @@ class DocFilesCheck(AbstractCheck.AbstractCheck):
             if docfile.endswith("/INSTALL"):
                 printWarning(pkg, "install-file-in-docs", docfile)
 
+    def __checkLicenseFiles(self, pkg):
+
+        for docfile in pkg.docFiles():
+            if docfile.endswith("/COPYING") or docfile.endswith("/LICENSE"):
+                printWarning(pkg, "license-file-in-docs", docfile)
+
     def check(self, pkg):
 
         if pkg.isSource() or not pkg.docFiles():
@@ -78,6 +84,7 @@ class DocFilesCheck(AbstractCheck.AbstractCheck):
 
         self.__checkRequirements(pkg)
         self.__checkUnwantedFiles(pkg)
+        self.__checkLicenseFiles(pkg)
 
 
 check = DocFilesCheck()
@@ -94,6 +101,11 @@ included in the package.  Such instructions are often not relevant for already
 installed packages; if this is the case for this file and it does not contain
 any information that is of interest after the package has been built and
 installed, do not include the file in the binary package.''',
+'license-file-in-docs',
+'''A file whose name suggests that it contains a license is
+included in the package as a document. Such files need to be marked with %license
+and not with %doc, which will install them in a special directory seperated
+from the documentation.''',
 )
 
 # DocFilesCheck.py ends here

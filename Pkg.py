@@ -421,6 +421,7 @@ class Pkg:
         self.current_linenum = None
         self._config_files = None
         self._doc_files = None
+        self._license_files = None
         self._noreplace_files = None
         self._ghost_files = None
         self._missingok_files = None
@@ -571,6 +572,14 @@ class Pkg:
 
         self._doc_files = [x.name for x in self.files().values() if x.is_doc]
         return self._doc_files
+
+    # return the list of license files
+    def licenseFiles(self):
+        if self._license_files is not None:
+            return self._license_files
+
+        self._license_files = [x.name for x in self.files().values() if x.is_license]
+        return self._license_files
 
     # return the list of ghost files
     def ghostFiles(self):
@@ -894,6 +903,7 @@ class PkgFile(object):
 
     is_config    = property(lambda self: self.flags & rpm.RPMFILE_CONFIG)
     is_doc       = property(lambda self: self.flags & rpm.RPMFILE_DOC)
+    is_license   = property(lambda self: self.flags & rpm.RPMFILE_LICENSE)
     is_noreplace = property(lambda self: self.flags & rpm.RPMFILE_NOREPLACE)
     is_ghost     = property(lambda self: self.flags & rpm.RPMFILE_GHOST)
     is_missingok = property(lambda self: self.flags & rpm.RPMFILE_MISSINGOK)
