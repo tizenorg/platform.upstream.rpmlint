@@ -1,3 +1,6 @@
+* Wed May 29 2013 Anas Nashif <anas.nashif@intel.com> submit/tizen/20130509.184103@af4c7fa
+- handle unallowed placeholders in group and license tags
+
 * Thu Apr 25 2013 Anas Nashif <anas.nashif@intel.com> submit/trunk/20130320.154005@b72b438
 - updated groups, config
 
