@@ -707,17 +707,16 @@ class TagsCheck(AbstractCheck.AbstractCheck):
 
         group = pkg[rpm.RPMTAG_GROUP]
         self._unexpanded_macros(pkg, 'Group', group)
-        if not group:
+        if group:
+            for p in ['TBD', 'TO BE', 'FILLED', 'Unspecified', 'TO_BE' ]:
+                if p in group:
+                    printWarning(pkg, 'group-placeholder-not-allowed', group)
+        elif not group:
             printError(pkg, 'no-group-tag')
         elif pkg.name.endswith('-devel') and not group.startswith('Development/'):
             printWarning(pkg, 'devel-package-with-non-devel-group', group)
         elif VALID_GROUPS and group not in VALID_GROUPS:
             printWarning(pkg, 'non-standard-group', group)
-        else:
-            for p in ['TBD', 'TO BE', 'FILLED', 'Unspecified', 'TO_BE' ]:
-                if p in group:
-                    printWarning(pkg, 'group-placeholder-not-allowed', group)
-                    break
 
         buildhost = pkg[rpm.RPMTAG_BUILDHOST]
         self._unexpanded_macros(pkg, 'BuildHost', buildhost)
@@ -787,7 +786,12 @@ class TagsCheck(AbstractCheck.AbstractCheck):
             printError(pkg, 'no-license')
         else:
             valid_license = True
-            if rpm_license not in VALID_LICENSES:
+            for p in ['TBD', 'TO BE', 'FILLED', 'Unspecified', 'TO_BE', 'TIZEN', 'samsung', 'Samsung', 'LICENSE' ]:
+                if p in rpm_license:
+                    printWarning(pkg, 'license-placeholder-not-allowed', rpm_license)
+                    valid_license = False
+                    break
+            if valid_license and rpm_license not in VALID_LICENSES:
                 for l1 in split_license(rpm_license):
                     if l1 in VALID_LICENSES:
                         continue
@@ -796,12 +800,6 @@ class TagsCheck(AbstractCheck.AbstractCheck):
                             printWarning(pkg, 'invalid-license', l2)
                             valid_license = False
 
-            if not valid_license:
-                for p in ['TBD', 'TO BE', 'FILLED', 'Unspecified', 'TO_BE', 'TIZEN', 'samsung', 'Samsung', 'LICENSE' ]:
-                    if p in rpm_license:
-                        printWarning(pkg, 'license-placeholder-not-allowed', license)
-                        valid_license = False
-                        break
 
             if not valid_license:
                 self._unexpanded_macros(pkg, 'License', rpm_license)
