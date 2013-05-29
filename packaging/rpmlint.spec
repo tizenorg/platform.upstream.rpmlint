@@ -3,7 +3,7 @@ BuildRequires:  python-rpm
 BuildRequires:  xz
 Summary:        Rpm correctness checker
 License:        GPL-2.0+
-Group:          Development/Tools
+Group:          Development/Packaging
 Version:        1.4
 Release:        0
 Source0:        http://rpmlint.zarb.org/download/rpmlint-%{version}.tar.bz2

@@ -401,7 +401,9 @@ BAD_WORDS = {
 DEFAULT_INVALID_REQUIRES = ('^is$', '^not$', '^owned$', '^by$', '^any$', '^package$', '^libsafe\.so\.')
 
 VALID_GROUPS = Config.getOption('ValidGroups', None)
-INVALID_PLACEHOLDERS = Config.getOption('Placeholders', None)
+VALID_DOMAINS = Config.getOption('ValidDomains', None)
+VALID_SUBDOMAINS = Config.getOption('ValidSubDomains', None)
+
 if VALID_GROUPS is None: # get defaults from rpm package only if it's not set
     VALID_GROUPS = Pkg.get_default_valid_rpmgroups()
 VALID_LICENSES = Config.getOption('ValidLicenses', DEFAULT_VALID_LICENSES)
@@ -705,17 +707,30 @@ class TagsCheck(AbstractCheck.AbstractCheck):
                 for lang in pkg[rpm.RPMTAG_HEADERI18NTABLE]:
                     self.check_description(pkg, lang, ignored_words)
 
+        valid_groups = VALID_GROUPS
+        app_groups = ()
+        for d in VALID_DOMAINS:
+            if d == 'Applications':
+                for dd in ['Multimedia', 'Social', 'Web', 'Telephony', 'Messaging', 'PIM', 'Network', 'Navigation', 'Other', 'Game', 'Tasks', 'Music', 'Photo', 'Video']:
+                    app_groups = app_groups + ("%s/%s" %(d,dd), )
+                continue
+            for sd in VALID_SUBDOMAINS:
+                valid_groups = valid_groups + ("%s/%s" %(d,sd), )
+
+        valid_groups = valid_groups + app_groups
+        print sorted(valid_groups)
+
         group = pkg[rpm.RPMTAG_GROUP]
         self._unexpanded_macros(pkg, 'Group', group)
         if group:
             for p in ['TBD', 'TO BE', 'FILLED', 'Unspecified', 'TO_BE' ]:
                 if p in group:
                     printWarning(pkg, 'group-placeholder-not-allowed', group)
-        elif not group:
+        if not group:
             printError(pkg, 'no-group-tag')
-        elif pkg.name.endswith('-devel') and not group.startswith('Development/'):
+        elif pkg.name.endswith('-devel') and not group.startswith('Development/') and not group.endswith('/Development'):
             printWarning(pkg, 'devel-package-with-non-devel-group', group)
-        elif VALID_GROUPS and group not in VALID_GROUPS:
+        elif group not in valid_groups:
             printWarning(pkg, 'non-standard-group', group)
 
         buildhost = pkg[rpm.RPMTAG_BUILDHOST]
@@ -1032,16 +1047,15 @@ in your spec file using the Group tag.''',
 Development/''',
 
 'non-standard-group',
-'''The value of the Group tag in the package is not valid.  Valid groups are:
-"%s".''' % '", "'.join(VALID_GROUPS),
+'''The value of the Group tag in the package is not valid.  Valid groups are
+listed here: https://wiki.tizen.org/wiki/Packaging/Guidelines#Group_Tag''',
 
 'group-placeholder-not-allowed',
-'''The value of the Group tag is a placeholder, please use a proper value:
-"%s".''' % '", "'.join(VALID_GROUPS),
+'''The value of the Group tag is a placeholder, please use a proper value.''',
 
 'no-changelogname-tag',
 '''There is no changelog. Please insert a '%changelog' section heading in your
-spec file and prepare your changes file using e.g. the 'osc vc' command.''',
+spec file and prepare your changes file using e.g. the 'gbs ch' command.''',
 
 'no-version-in-last-changelog',
 '''The latest changelog entry doesn't contain a version. Please insert the
