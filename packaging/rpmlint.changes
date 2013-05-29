@@ -1,3 +1,6 @@
+* Wed May 29 2013 Anas Nashif <anas.nashif@intel.com> submit/tizen/20130529.123751@88d6dc7
+- use domains to generate group list
+
 * Wed May 29 2013 Anas Nashif <anas.nashif@intel.com> submit/tizen/20130529.094042@e420d82
 - Add Flora to allowed licenses
 
