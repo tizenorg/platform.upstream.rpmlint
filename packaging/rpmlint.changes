@@ -1,3 +1,6 @@
+* Wed May 29 2013 Anas Nashif <anas.nashif@intel.com> submit/tizen/20130529.094042@e420d82
+- Add Flora to allowed licenses
+
 * Wed May 29 2013 Anas Nashif <anas.nashif@intel.com> submit/tizen/20130509.184103@af4c7fa
 - handle unallowed placeholders in group and license tags
 
