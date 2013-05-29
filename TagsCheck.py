@@ -401,6 +401,7 @@ BAD_WORDS = {
 DEFAULT_INVALID_REQUIRES = ('^is$', '^not$', '^owned$', '^by$', '^any$', '^package$', '^libsafe\.so\.')
 
 VALID_GROUPS = Config.getOption('ValidGroups', None)
+INVALID_PLACEHOLDERS = Config.getOption('Placeholders', None)
 if VALID_GROUPS is None: # get defaults from rpm package only if it's not set
     VALID_GROUPS = Pkg.get_default_valid_rpmgroups()
 VALID_LICENSES = Config.getOption('ValidLicenses', DEFAULT_VALID_LICENSES)
@@ -712,6 +713,11 @@ class TagsCheck(AbstractCheck.AbstractCheck):
             printWarning(pkg, 'devel-package-with-non-devel-group', group)
         elif VALID_GROUPS and group not in VALID_GROUPS:
             printWarning(pkg, 'non-standard-group', group)
+        else:
+            for p in ['TBD', 'TO BE', 'FILLED', 'Unspecified', 'TO_BE' ]:
+                if p in group:
+                    printWarning(pkg, 'group-placeholder-not-allowed', group)
+                    break
 
         buildhost = pkg[rpm.RPMTAG_BUILDHOST]
         self._unexpanded_macros(pkg, 'BuildHost', buildhost)
@@ -789,6 +795,14 @@ class TagsCheck(AbstractCheck.AbstractCheck):
                         if l2 not in VALID_LICENSES:
                             printWarning(pkg, 'invalid-license', l2)
                             valid_license = False
+
+            if not valid_license:
+                for p in ['TBD', 'TO BE', 'FILLED', 'Unspecified', 'TO_BE', 'TIZEN', 'samsung', 'Samsung', 'LICENSE' ]:
+                    if p in rpm_license:
+                        printWarning(pkg, 'license-placeholder-not-allowed', license)
+                        valid_license = False
+                        break
+
             if not valid_license:
                 self._unexpanded_macros(pkg, 'License', rpm_license)
 
@@ -1023,6 +1037,10 @@ Development/''',
 '''The value of the Group tag in the package is not valid.  Valid groups are:
 "%s".''' % '", "'.join(VALID_GROUPS),
 
+'group-placeholder-not-allowed',
+'''The value of the Group tag is a placeholder, please use a proper value:
+"%s".''' % '", "'.join(VALID_GROUPS),
+
 'no-changelogname-tag',
 '''There is no changelog. Please insert a '%changelog' section heading in your
 spec file and prepare your changes file using e.g. the 'osc vc' command.''',
@@ -1050,6 +1068,10 @@ your specfile.''',
 
 'invalid-license',
 '''The value of the License tag was not recognized.  Known values are:
+"%s".''' % '", "'.join(VALID_LICENSES),
+
+'license-placeholder-not-allowed',
+'''The value of the License tag was not recognized and seems to be a placeholder.  Known values are:
 "%s".''' % '", "'.join(VALID_LICENSES),
 
 'obsolete-not-provided',
