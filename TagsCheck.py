@@ -718,7 +718,6 @@ class TagsCheck(AbstractCheck.AbstractCheck):
                 valid_groups = valid_groups + ("%s/%s" %(d,sd), )
 
         valid_groups = valid_groups + app_groups
-        print sorted(valid_groups)
 
         group = pkg[rpm.RPMTAG_GROUP]
         self._unexpanded_macros(pkg, 'Group', group)
