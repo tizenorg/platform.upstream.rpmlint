@@ -1050,7 +1050,10 @@ Development/''',
 listed here: https://wiki.tizen.org/wiki/Packaging/Guidelines#Group_Tag''',
 
 'group-placeholder-not-allowed',
-'''The value of the Group tag is a placeholder, please use a proper value.''',
+'''The value of the Group tag is a placeholder, please use a proper value.
+Valid groups are listed here:
+https://wiki.tizen.org/wiki/Packaging/Guidelines#Group_Tag
+''',
 
 'no-changelogname-tag',
 '''There is no changelog. Please insert a '%changelog' section heading in your
