@@ -800,7 +800,7 @@ class TagsCheck(AbstractCheck.AbstractCheck):
             printError(pkg, 'no-license')
         else:
             valid_license = True
-            for p in ['TBD', 'TO BE', 'FILLED', 'Unspecified', 'TO_BE', 'TIZEN', 'samsung', 'Samsung', 'LICENSE' ]:
+            for p in ['TBD', 'TO BE', 'FILLED', 'Unspecified', 'TO_BE', 'TIZEN', 'samsung', 'Samsung'  ]:
                 if p in rpm_license:
                     printWarning(pkg, 'license-placeholder-not-allowed', rpm_license)
                     valid_license = False
