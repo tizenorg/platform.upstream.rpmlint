@@ -1,3 +1,14 @@
+* Thu Jul 11 2013 Anas Nashif <anas.nashif@intel.com> accepted/tizen/20130710.214739@66cd3a3
+- Fixed manifest source location in the spec
+
+* Fri Jul 05 2013 Anas Nashif <anas.nashif@intel.com> accepted/tizen/20130531.223702@3667cab
+- add more filters
+- cleanup standard users/groups
+- filter out url warning
+- util to print groups
+- add non-domains super groups
+- sync with latest domain list
+
 * Fri May 31 2013 Anas Nashif <anas.nashif@intel.com> submit/tizen/20130530.185839@b37d032
 - Use Development/<DOMAIN>
 

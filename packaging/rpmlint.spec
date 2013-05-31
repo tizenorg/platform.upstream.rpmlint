@@ -1,11 +1,10 @@
 Name:           rpmlint
-BuildRequires:  python-rpm
-BuildRequires:  xz
-Summary:        Rpm correctness checker
-License:        GPL-2.0+
-Group:          Development/Packaging
 Version:        1.4
 Release:        0
+License:        GPL-2.0+
+Summary:        Rpm correctness checker
+Url:            http://rpmlint.zarb.org/
+Group:          Development/Packaging
 Source0:        http://rpmlint.zarb.org/download/rpmlint-%{version}.tar.bz2
 Source1:        rpmlint-checks-master.tar.gz
 Source2:        config
@@ -13,7 +12,9 @@ Source10:       rpmgroups.config
 Source11:       pie.config
 Source12:       licenses.config
 Source100:      syntax-validator.py
-Url:            http://rpmlint.zarb.org/
+Source1001:     rpmlint.manifest
+BuildRequires:  python-rpm
+BuildRequires:  xz
 Requires:       /usr/bin/readelf
 Requires:       bash
 Requires:       cpio
@@ -28,13 +29,12 @@ BuildArch:      noarch
 %description
 Rpmlint is a tool to check common errors on rpm packages. Binary and
 source packages can be checked.
-Source1001: 	rpmlint.manifest
 
 %prep
 %setup -q -n rpmlint-%{version}  -a1
 cp %{SOURCE1001} .
-cp %{S:2} .
-# Only move top-level python files 
+cp %{SOURCE2} .
+# Only move top-level python files
 chmod 0755 rpmlint-checks-master/*.py
 mv rpmlint-checks-master/*.py .
 
@@ -42,28 +42,28 @@ mv rpmlint-checks-master/*.py .
 make %{?_smp_mflags}
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 # the provided bash-completion does not work and only prints bash errors
-rm -rf  $RPM_BUILD_ROOT/etc/bash_completion.d
-mv $RPM_BUILD_ROOT/etc/rpmlint/config $RPM_BUILD_ROOT/usr/share/rpmlint/config
-head -n 8 $RPM_BUILD_ROOT/usr/share/rpmlint/config > $RPM_BUILD_ROOT/etc/rpmlint/config
+rm -rf  %{buildroot}%{_sysconfdir}/bash_completion.d
+mv %{buildroot}%{_sysconfdir}/rpmlint/config %{buildroot}%{_datadir}/rpmlint/config
+head -n 8 %{buildroot}%{_datadir}/rpmlint/config > %{buildroot}%{_sysconfdir}/rpmlint/config
 # make sure that the package is sane
-python -tt %{SOURCE100} $RPM_BUILD_ROOT/usr/share/rpmlint/*.py $RPM_BUILD_ROOT/usr/share/rpmlint/config
-%__install -m 644 %{SOURCE10} %{buildroot}/%{_sysconfdir}/rpmlint/
-%__install -m 644 %{SOURCE11} %{buildroot}/%{_sysconfdir}/rpmlint/
-%__install -m 644 %{SOURCE12} %{buildroot}/%{_sysconfdir}/rpmlint/
+python -tt %{SOURCE100} %{buildroot}%{_datadir}/rpmlint/*.py %{buildroot}%{_datadir}/rpmlint/config
+install -m 644 %{SOURCE10} %{buildroot}/%{_sysconfdir}/rpmlint/
+install -m 644 %{SOURCE11} %{buildroot}/%{_sysconfdir}/rpmlint/
+install -m 644 %{SOURCE12} %{buildroot}/%{_sysconfdir}/rpmlint/
 
 
 %files
 %manifest %{name}.manifest
 %defattr(-,root,root,0755)
-%license COPYING 
-%{_prefix}/bin/*
-%{_prefix}/share/rpmlint
-%config(noreplace) /etc/rpmlint/config
-%config(noreplace) /etc/rpmlint/licenses.config
+%license COPYING
+%{_bindir}/*
+%{_datadir}/rpmlint
+%config(noreplace) %{_sysconfdir}/rpmlint/config
+%config(noreplace) %{_sysconfdir}/rpmlint/licenses.config
 %config %{_sysconfdir}/rpmlint/rpmgroups.config
 %config %{_sysconfdir}/rpmlint/pie.config
-%dir /etc/rpmlint
-%doc /usr/share/man/man1/rpmlint.1.gz
+%dir %{_sysconfdir}/rpmlint
+%doc %{_mandir}/man1/rpmlint.1.gz
 
