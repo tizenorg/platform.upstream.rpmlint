@@ -716,6 +716,8 @@ class TagsCheck(AbstractCheck.AbstractCheck):
                 continue
             for sd in VALID_SUBDOMAINS:
                 valid_groups = valid_groups + ("%s/%s" %(d,sd), )
+        for d in VALID_DOMAINS:
+                valid_groups = valid_groups + ("Development/%s" %(d), )
 
         valid_groups = valid_groups + app_groups
 
