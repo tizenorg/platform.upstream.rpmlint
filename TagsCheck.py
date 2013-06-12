@@ -403,6 +403,7 @@ DEFAULT_INVALID_REQUIRES = ('^is$', '^not$', '^owned$', '^by$', '^any$', '^packa
 VALID_GROUPS = Config.getOption('ValidGroups', None)
 VALID_DOMAINS = Config.getOption('ValidDomains', None)
 VALID_SUBDOMAINS = Config.getOption('ValidSubDomains', None)
+VALID_NONE_DOMAINS = Config.getOption('ValidNoneDomains', None)
 
 if VALID_GROUPS is None: # get defaults from rpm package only if it's not set
     VALID_GROUPS = Pkg.get_default_valid_rpmgroups()
@@ -720,6 +721,7 @@ class TagsCheck(AbstractCheck.AbstractCheck):
                 valid_groups = valid_groups + ("Development/%s" %(d), )
 
         valid_groups = valid_groups + app_groups
+        valid_groups = valid_groups + VALID_NONE_DOMAINS
 
         group = pkg[rpm.RPMTAG_GROUP]
         self._unexpanded_macros(pkg, 'Group', group)
