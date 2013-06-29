@@ -28,9 +28,11 @@ BuildArch:      noarch
 %description
 Rpmlint is a tool to check common errors on rpm packages. Binary and
 source packages can be checked.
+Source1001: 	rpmlint.manifest
 
 %prep
 %setup -q -n rpmlint-%{version}  -a1
+cp %{SOURCE1001} .
 cp %{S:2} .
 # Only move top-level python files 
 chmod 0755 rpmlint-checks-master/*.py
@@ -53,6 +55,7 @@ python -tt %{SOURCE100} $RPM_BUILD_ROOT/usr/share/rpmlint/*.py $RPM_BUILD_ROOT/u
 
 
 %files
+%manifest %{name}.manifest
 %defattr(-,root,root,0755)
 %license COPYING 
 %{_prefix}/bin/*
