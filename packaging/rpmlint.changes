@@ -1,3 +1,6 @@
+* Tue Aug 13 2013 Anas Nashif <anas.nashif@intel.com> submit/tizen/20130802.145509@00cd9b9
+- Update licenses and add TIZEN-* licenses
+
 * Thu Aug 01 2013 Anas Nashif <anas.nashif@intel.com> submit/tizen/20130712.022129@0bdfcdd
 - Add glibc license
 - re-add Development/Libraries to avoid mass failure of packages for now
