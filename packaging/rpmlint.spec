@@ -6,7 +6,6 @@ Summary:        Rpm correctness checker
 Url:            http://rpmlint.zarb.org/
 Group:          Development/Packaging
 Source0:        http://rpmlint.zarb.org/download/rpmlint-%{version}.tar.bz2
-Source1:        rpmlint-checks-master.tar.gz
 Source2:        config
 Source10:       rpmgroups.config
 Source11:       pie.config
@@ -31,18 +30,21 @@ Rpmlint is a tool to check common errors on rpm packages. Binary and
 source packages can be checked.
 
 %prep
-%setup -q -n rpmlint-%{version}  -a1
+%setup -q -n rpmlint-%{version}
 cp %{SOURCE1001} .
 cp %{SOURCE2} .
-# Only move top-level python files
-chmod 0755 rpmlint-checks-master/*.py
-mv rpmlint-checks-master/*.py .
 
 %build
 make %{?_smp_mflags}
+cd rpmlint-checks-master
+make %{?_smp_mflags}
+cd -
 
 %install
 %make_install
+cd rpmlint-checks-master
+%make_install
+cd -
 # the provided bash-completion does not work and only prints bash errors
 rm -rf  %{buildroot}%{_sysconfdir}/bash_completion.d
 mv %{buildroot}%{_sysconfdir}/rpmlint/config %{buildroot}%{_datadir}/rpmlint/config
@@ -59,6 +61,8 @@ install -m 644 %{SOURCE12} %{buildroot}/%{_sysconfdir}/rpmlint/
 %defattr(-,root,root,0755)
 %license COPYING
 %{_bindir}/*
+%exclude %{_datadir}/rpmlint/experimental
+%exclude %{_datadir}/rpmlint/obsolete
 %{_datadir}/rpmlint
 %config(noreplace) %{_sysconfdir}/rpmlint/config
 %config(noreplace) %{_sysconfdir}/rpmlint/licenses.config
