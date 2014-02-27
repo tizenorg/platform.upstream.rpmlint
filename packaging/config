@@ -142,7 +142,6 @@ setOption('StandardGroups', (
     'wheel',
     'www',
 # Tizen
-    'app',
     ))
 
 setOption('StandardUsers', (
@@ -173,7 +172,6 @@ setOption('StandardUsers', (
     'tftp',
     'wwwrun',
 # Tizen
-    'app',
     ))
 
 addDetails('non-standard-uid',
