@@ -20,7 +20,7 @@ class PkgConfigCheck(AbstractCheck.AbstractFilesCheck):
         AbstractCheck.AbstractFilesCheck.__init__(self, "CheckPkgConfig", ".*/pkgconfig/.*\.pc$")
         # currently causes too many failures (2008-03-05)
         #self.suspicious_dir=re.compile('(?:/usr/src/\w+/BUILD|/var/tmp|/tmp|/home|\@\w{1,50}\@)')
-        self.suspicious_dir=re.compile('(?:/usr/src/\w+/BUILD|/var/tmp|/tmp|/home)')
+        self.suspicious_dir=re.compile('[=:](?:/usr/src/\w+/BUILD|/var/tmp|/tmp|/home)')
 
     def check(self, pkg):
         # check for references to /lib when in lib64 mode
