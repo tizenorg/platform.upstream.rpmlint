@@ -132,6 +132,9 @@ def main():
                                 check.check_spec(pkg, arg)
                                 pkg.cleanup()
                                 specfiles_checked += 1
+                        elif "-ccache-" in arg:
+                            # ignore these
+                            pass
                         elif "/" in arg or arg.endswith(".rpm") or \
                                 arg.endswith(".spm"):
                             pkgs.append(Pkg.Pkg(arg, extract_dir))
