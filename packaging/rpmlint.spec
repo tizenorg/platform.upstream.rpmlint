@@ -18,7 +18,7 @@ Requires:       /usr/bin/readelf
 Requires:       bash
 Requires:       cpio
 Requires:       dash
-Requires:       desktop-file-utils
+#Requires:       desktop-file-utils
 Requires:       file
 Requires:       findutils
 Requires:       python-magic
