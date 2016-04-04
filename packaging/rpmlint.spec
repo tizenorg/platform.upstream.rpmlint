@@ -35,6 +35,9 @@ cp %{SOURCE1001} .
 cp %{SOURCE2} .
 
 %build
+export CFLAGS+=" -fvisibility=hidden"
+  export CXXFLAGS+=" -fvisibility=hidden"
+  
 make %{?_smp_mflags}
 cd rpmlint-checks-master
 make %{?_smp_mflags}
